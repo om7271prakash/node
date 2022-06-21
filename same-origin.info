@@ -1,0 +1,8 @@
+Q:  What is same origin?
+    - URL: https://wwww.google.com:443/maps
+
+    Protocol: https
+    Host: www.google.com
+    Port: 443
+
+    Whenever these above one of three parameter changes, origin will be change. Origin is combination of these three things.

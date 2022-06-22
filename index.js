@@ -14,7 +14,7 @@ const friends = [
         name: "Rakesh Sharma"
     }
 ];
-
+app.use(express.json());
 app.use((req, res, next) => {
     const start = Date.now();
     next();
@@ -51,8 +51,24 @@ app.get('/friends/:friendId', (req, res) => {
         res.status(200).json(friend);   
     }else{
         res.status(404).json({
-            error: "Friend does not exist."
+            error: 'Friend does not exist.'
         });
+    }
+});
+
+app.post('/friends', (req, res) => {
+    console.log(req.body.name);
+    if(req.body.name){
+        const newFriend = {
+            id: friends.length,
+            name: req.body.name
+        }
+        friends.push(newFriend);
+        return res.status(200).json(newFriend);
+    }else{
+        return res.status(400).json({
+            error: 'Missing property Name.'
+        })
     }
 });
 

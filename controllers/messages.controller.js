@@ -1,7 +1,12 @@
+const { rmSync } = require('fs');
 const path = require('path');
 
 function getMessage(req, res) {
-    res.sendFile(path.join(__dirname, '..', 'public', 'images', 'nature.jpg'));
+    res.render('messages', {
+        title: 'Message to my friend',
+        friend: 'Dola Ram'
+    });
+    // res.sendFile(path.join(__dirname, '..', 'public', 'images', 'nature.jpg'));
     // res.send("<ul><li>Om Praksh</li><li>Rakesh Sharma</li><li>Ravinder Kumar</li></ul>");
 }
 

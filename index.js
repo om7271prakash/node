@@ -8,7 +8,11 @@ const app = express();
 
 const PORT = 3000;
 
-app.use('/nature', express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(__dirname, 'public')));
+
+app.set('view engine', 'hbs');
+app.set('views', 'views');
+
 app.use(express.json());
 app.use((req, res, next) => {
     const start = Date.now();
@@ -16,6 +20,13 @@ app.use((req, res, next) => {
     const delta = Date.now() - start;
     console.log(`${req.method} ${req.url} ${delta}ms`);
 });
+
+app.get('/', (req, res) => {
+    res.render('index', {
+        title: "Nature",
+        caption: "Nature is very beautiful",
+    })
+})
 
 app.use('/friends', friendsRouter);
 app.use('/messages', messagesRouter);

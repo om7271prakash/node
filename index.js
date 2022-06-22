@@ -1,19 +1,12 @@
 const express = require('express');
 
+const messagesController = require('./controllers/messages.controller');
+const friendsController = require('./controllers/friends.controllers');
+
 const app = express();
 
 const PORT = 3000;
 
-const friends = [
-    {
-        id: 0,
-        name: "Aman Kumar"
-    },
-    {
-        id: 1,
-        name: "Rakesh Sharma"
-    }
-];
 app.use(express.json());
 app.use((req, res, next) => {
     const start = Date.now();
@@ -22,55 +15,14 @@ app.use((req, res, next) => {
     console.log(`${req.method} ${req.url} ${delta}ms`);
 });
 
-app.get('', (req, res) => {
-    res.send("Hello there! This is simple text");
-});
+app.get('/messages', messagesController.getMessage);
+app.post('/messages', messagesController.postMessage);
 
-app.get('/json', (req, res) => {
-    res.send({
-        id: 1,
-        name: "Om Prakash Thakur",
-        state: "Himachal Pradesh",
-        country: "India"
-    });
-});
+app.get('/friends', friendsController.getFriends);
 
-app.get('/html', (req, res) => {
-    res.send("<ul><li>Om Praksh</li><li>Rakesh Sharma</li><li>Ravinder Kumar</li></ul>");
-});
+app.get('/friends/:friendId', friendsController.getFriend);
 
-app.get('/friends', (req, res) => {
-    res.send(friends);
-});
-
-app.get('/friends/:friendId', (req, res) => {
-    const friendId = req.params.friendId;
-    const friend = friends[friendId];
-    console.log(friend)
-    if(friend){
-        res.status(200).json(friend);   
-    }else{
-        res.status(404).json({
-            error: 'Friend does not exist.'
-        });
-    }
-});
-
-app.post('/friends', (req, res) => {
-    console.log(req.body.name);
-    if(req.body.name){
-        const newFriend = {
-            id: friends.length,
-            name: req.body.name
-        }
-        friends.push(newFriend);
-        return res.status(200).json(newFriend);
-    }else{
-        return res.status(400).json({
-            error: 'Missing property Name.'
-        })
-    }
-});
+app.post('/friends', friendsController.postFriends);
 
 app.listen(PORT, () => {
     console.log(`App is running ${PORT}`);
